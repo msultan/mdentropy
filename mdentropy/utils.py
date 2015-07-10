@@ -25,9 +25,7 @@ def adaptive(X, r=[-180, 180]):
     nbins = int(np.sqrt(X.shape[0]/5))
     n = X.shape[0]/nbins
     Y = np.sort(X)
-    return np.hstack((r[0],
-                      [Y[(i+1)*n] for i in range(nbins-1)],
-                      r[-1]))
+    return np.hstack((r[0], Y[np.arange(1, nbins)*n], r[-1]))
 
 
 def hist(r, *args):
