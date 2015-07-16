@@ -23,7 +23,7 @@ class timing(object):
 
 def adaptive(r=[-180, 180], *args):
     nbins = int(np.sqrt(args[0].shape[0]/5))
-    d = np.cumsum(nbins*[1./nbins])**len(args)[:-1]
+    d = np.cumsum(nbins*[1./nbins])[:-1]**len(args)
     sargs = tuple(np.sort(x) for x in np.vstack(tuple(args)))
     p = np.product([(x-x.min()).cumsum()/(x-x.min()).sum()
                     for x in np.vstack(sargs)], 0)
