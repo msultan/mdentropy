@@ -28,13 +28,13 @@ def adaptive(r=[-180, 180], *args):
     p = np.product([(x-x.min()).cumsum()/(x-x.min()).sum()
                     for x in np.vstack(sargs)], 0)
     ind = [sum(p < i) - 1 for i in d]
-    bino = [np.hstack((r[0], x[ind], r[-1])) for x in sargs]
-    return bino
+    bins = [np.hstack((r[0], x[ind], r[-1])) for x in sargs]
+    return bins
 
 
 def hist(r, *args):
     data = np.vstack((args)).T
-    bins = [adaptive(i, r) for i in args]
+    bins = adaptive(r, *args)
     return np.histogramdd(data, bins=bins)[0].flatten()
 
 
