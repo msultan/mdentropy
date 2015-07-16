@@ -21,11 +21,15 @@ class timing(object):
         return False
 
 
-def adaptive(X, r=[-180, 180]):
-    nbins = int(np.sqrt(X.shape[0]/5))
-    n = X.shape[0]/nbins
-    Y = np.sort(X)
-    return np.hstack((r[0], Y[np.arange(1, nbins, dtype=int)*n], r[-1]))
+def adaptive(r=[-180, 180], *args):
+    nbins = int(np.sqrt(args[0].shape[0]/5))
+    d = np.cumsum(nbins*[1./nbins])**len(args)[:-1]
+    sargs = tuple(np.sort(x) for x in np.vstack(tuple(args)))
+    p = np.product([(x-x.min()).cumsum()/(x-x.min()).sum()
+                    for x in np.vstack(sargs)], 0)
+    ind = [sum(p < i) - 1 for i in d]
+    bino = [np.hstack((r[0], x[ind], r[-1])) for x in sargs]
+    return bino
 
 
 def hist(r, *args):
